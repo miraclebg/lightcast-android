@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_COMPILE_SDK_VERSION)
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebuggable true
+        }
+        beta {
+            debuggable true
+            jniDebuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            debuggable false
+            jniDebuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// include deprecated methods in lint checking
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleDynamicVersion
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation 'com.amitshekhar.android:jackson-android-networking:1.0.1'
+    implementation "com.android.support:support-annotations:$project.ANDROID_SUPPORT_LIBRARY_VERSION"
+
+    //implementation 'org.slf4j:slf4j-api:1.7.25'
+    //implementation 'com.github.tony19:logback-android:1.1.1-10'
+
+    //implementation 'com.android.support:support-v4:27.1.0'
+    //noinspection GradleDynamicVersion
+    implementation 'org.cryptonode.jncryptor:jncryptor:1.2.0'
+}
